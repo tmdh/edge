@@ -1,0 +1,20 @@
+name: Run app.py
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  basic-checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Build docker image
+        run: docker build -t hello-python .
+      
+      - name: Run docker container
+        run: docker run --name hello-container hello-python
+        
