@@ -9,7 +9,21 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log("Successfully connected to MongoDB."))
+  .then(async () => {
+    console.log("Successfully connected to MongoDB.");
+    try {
+      const count = await Message.countDocuments();
+      if (count === 0) {
+        const defaultMessage = new Message({
+          text: "Welcome to the application!",
+        });
+        await defaultMessage.save();
+        console.log("Added default message");
+      }
+    } catch (err) {
+      console.error("Error during initialization:", err);
+    }
+  })
   .catch((err) => console.error("MongoDB connection error:", err));
 
 // Create a simple Message model
